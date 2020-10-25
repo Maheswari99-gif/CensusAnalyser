@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class CensusAnalyserTest {
-	private final String STATE_CENSUS_CSV_FILE = "./src/main/resources/StateCensusCSVData.csv";
+	private final String STATE_CENSUS_CSV_FILE = "./src/main/resources/StateCensusCsvData(2).csv";
 	private final String INCORRECT_STATE_CENSUS_CSV_FILE = "./src/main/resources/_StateCensusCSVData.csv";
 
 	@Test
@@ -12,7 +12,7 @@ public class CensusAnalyserTest {
 			throws CustomStateCensusAnalyserException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		int numOfRecords = stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE);
-		Assert.assertEquals(6, numOfRecords);
+		Assert.assertEquals(7, numOfRecords);
 	}
 
 	@Test
