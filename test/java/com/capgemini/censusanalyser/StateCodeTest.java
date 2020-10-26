@@ -31,7 +31,7 @@ public class StateCodeTest {
 			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
 			mappingStrategy.setType(CSVStates.class);
 			stateCensusAnalyser.loadStateCodeData(INCORRECT_STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, ',');
-		} catch (CustomStateCodeAnalyserException | CustomFileIOException e) {
+		} catch (CustomFileIOException e) {
 			exceptionMessage = e.getMessage();
 		}
 		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM.toString(), exceptionMessage);
@@ -43,7 +43,7 @@ public class StateCodeTest {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, null, null, ',');
-		} catch (CustomStateCodeAnalyserException | CustomFileIOException e) {
+		} catch (CustomFileIOException e) {
 			exceptionMessage = e.getMessage();
 		}
 		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_PARSE_PROBLEM.toString(), exceptionMessage);
@@ -57,7 +57,7 @@ public class StateCodeTest {
 			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
 			mappingStrategy.setType(CSVStates.class);
 			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, '|');
-		} catch (CustomStateCodeAnalyserException | CustomFileIOException e) {
+		} catch (CustomFileIOException e) {
 			exceptionMessage = e.getMessage();
 		}
 		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
@@ -72,7 +72,7 @@ public class StateCodeTest {
 			mappingStrategy.setType(CSVStates.class);
 			stateCensusAnalyser.loadStateCodeData(INCORRECT_HEADER_STATE_CODE_CSV_FILE, mappingStrategy,
 					CSVStates.class, ',');
-		} catch (CustomStateCodeAnalyserException | CustomFileIOException e) {
+		} catch (CustomFileIOException e) {
 			exceptionMessage = e.getMessage();
 		}
 		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);

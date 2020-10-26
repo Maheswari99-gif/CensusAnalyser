@@ -1,51 +1,41 @@
 package com.capgemini.censusanalyser;
 
+import com.capgemini.opencsvbuilder.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.StreamSupport;
 import com.opencsv.bean.MappingStrategy;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy,
-			Class<? extends CSVStateCensus> csvBinderClass, final char separator)
-			throws CustomFileIOException, CustomStateCensusAnalyserException {
-		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-			Iterator<CSVStateCensus> csvStateCensusIterator;
+	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomFileIOException, CustomCSVBuilderException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
+			List<CSVStateCensus> csvStateCensusList;
 			ICsvBuilder csvBuilder = new CsvBuilderFactory().createCSVBuilder();
-			if (csvBinderClass != null)
-				csvStateCensusIterator = csvBuilder.getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy,
-						separator);
+			if(csvBinderClass != null)
+				csvStateCensusList = csvBuilder.getCSVFileList(reader, CSVStateCensus.class, mappingStrategy, separator);
 			else
-				csvStateCensusIterator = csvBuilder.getCSVFileIterator(reader, null, null, separator);
-			return getCount(csvStateCensusIterator);
+				csvStateCensusList = csvBuilder.getCSVFileList(reader, null, null, separator);
+			return csvStateCensusList.size();
 		} catch (IOException e) {
 			throw new CustomFileIOException(ExceptionTypeIO.FILE_PROBLEM);
-		}
+		} 
 	}
 
-	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy,
-			Class<? extends CSVStates> csvBinderClass, final char separator)
-			throws CustomFileIOException, CustomStateCodeAnalyserException {
-		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-			Iterator<CSVStates> csvStateCodeIterator;
+	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy, Class<? extends CSVStates> csvBinderClass, final char separator) throws CustomFileIOException, CustomCSVBuilderException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
+			List<CSVStates> csvStateCodeList;
 			ICsvBuilder csvBuilder = new CsvBuilderFactory().createCSVBuilder();
-			if (csvBinderClass != null)
-				csvStateCodeIterator = csvBuilder.getCSVFileIterator(reader, CSVStates.class, mappingStrategy,
-						separator);
+			if(csvBinderClass != null)
+				csvStateCodeList = csvBuilder.getCSVFileList(reader, CSVStates.class, mappingStrategy, separator);
 			else
-				csvStateCodeIterator = csvBuilder.getCSVFileIterator(reader, null, null, separator);
-			return getCount(csvStateCodeIterator);
+				csvStateCodeList= csvBuilder.getCSVFileList(reader, null, null, separator);
+			return csvStateCodeList.size();
 		} catch (IOException e) {
 			throw new CustomFileIOException(ExceptionTypeIO.FILE_PROBLEM);
-		}
-	}
-
-	private <E> int getCount(Iterator<E> iterator) {
-		Iterable<E> csvIterable = () -> iterator;
-		int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-		return numOfEntries;
+		} 
 	}
 }
